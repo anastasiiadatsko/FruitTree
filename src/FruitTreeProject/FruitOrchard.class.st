@@ -24,10 +24,10 @@ FruitOrchard class >> loadFromCsvFileNamed: aFileName [
 
                 type := parts at: 1.
                 species := parts at: 2.
-                age := (parts at: 3) asNumber.
+                age := (parts at: 3) asNumber asInteger.
                 height := (parts at: 4) asNumber.
                 yield := (parts at: 5) asNumber.
-                fruitingAge := (parts at: 6) asNumber.
+                fruitingAge := (parts at: 6) asNumber asInteger.
                 extra := parts at: 7.
 
                 tree := nil.
@@ -60,6 +60,12 @@ FruitOrchard class >> loadFromCsvFileNamed: aFileName [
     ].
 
     ^ orchard
+
+]
+
+{ #category : 'as yet unclassified' }
+FruitOrchard class >> loadFromDatabase: aDatabase [
+    ^ aDatabase loadAsOrchard
 
 ]
 
@@ -132,8 +138,8 @@ FruitOrchard >> addTreeFromDialog [
         initialAnswer: (typeIndex = 1 ifTrue: [ 'Apple' ] ifFalse: [ 'Apricot' ]).
 
     age := (ui
-        request: 'Enter age (years):'
-        initialAnswer: '3') asNumber.
+    request: 'Enter age (years):'
+    initialAnswer: '3') asNumber asInteger.
 
     height := (ui
         request: 'Enter height:'
@@ -144,8 +150,8 @@ FruitOrchard >> addTreeFromDialog [
         initialAnswer: '0') asNumber.
 
     fruitingAge := (ui
-        request: 'Enter fruiting age:'
-        initialAnswer: FruitTree defaultFruitingAge printString) asNumber.
+    request: 'Enter fruiting age:'
+    initialAnswer: FruitTree defaultFruitingAge printString) asNumber asInteger.
 
     typeIndex = 1
         ifTrue: [
@@ -183,10 +189,11 @@ FruitOrchard >> addTreeFromDialog [
 ]
 
 { #category : 'as yet unclassified' }
-FruitOrchard >> allTreesAreFruiting [ 
+FruitOrchard >> allTreesAreFruiting [
     ^ trees isEmpty
-        ifTrue: [ false ]  
-        ifFalse: [ trees allSatisfy: [ :each | each isFruiting ] ]
+        ifTrue: [ false ]
+        ifFalse: [ trees allSatisfy: [ :each | each hasReachedFruitingAge ] ]
+
 ]
 
 { #category : 'initialization' }
@@ -269,6 +276,12 @@ FruitOrchard >> saveAsStonToFileNamed: aFileName [
     ] ensure: [
         stream close
     ].
+]
+
+{ #category : 'as yet unclassified' }
+FruitOrchard >> saveToDatabase: aDatabase [
+    ^ aDatabase storeOrchard: self
+
 ]
 
 { #category : 'as yet unclassified' }
