@@ -44,9 +44,9 @@ AppleTree >> initialize [
 ]
 
 { #category : 'testing' }
-AppleTree >> isFruiting [ 
-    ^ (age >= fruitingAge)
-        and: [ (age - fruitingAge) even ]
+AppleTree >> isFruiting [
+    ^ self hasReachedFruitingAge
+        and: [ (age - fruitingAge) asInteger even ]
 
 ]
 

@@ -65,9 +65,14 @@ FruitTree >> <= anotherTree [
 ]
 
 { #category : 'comparing' }
-FruitTree >> = anotherTree [
-    ^ self class = anotherTree class 
-        and: [ self height = anotherTree height ]
+FruitTree >> = anotherObject [
+    self == anotherObject ifTrue: [ ^ true ].
+    (anotherObject isKindOf: self class) ifFalse: [ ^ false ].
+    ^ species = anotherObject species
+        and: [ age = anotherObject age
+        and: [ height = anotherObject height
+        and: [ yield = anotherObject yield
+        and: [ fruitingAge = anotherObject fruitingAge ] ] ] ]
 
 ]
 
@@ -123,9 +128,23 @@ FruitTree >> growTwoYears [
 
 ]
 
+{ #category : 'testing' }
+FruitTree >> hasReachedFruitingAge [
+    ^ age >= fruitingAge
+
+]
+
 { #category : 'comparing' }
 FruitTree >> hash [
-    ^ self class hash bitXor: height hash
+    | h |
+    h := self class hash.
+    h := h bitXor: species hash.
+    h := h bitXor: age hash.
+    h := h bitXor: height hash.
+    h := h bitXor: yield hash.
+    h := h bitXor: fruitingAge hash.
+    ^ h
+
 ]
 
 { #category : 'accessing' }
