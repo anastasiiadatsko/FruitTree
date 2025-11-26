@@ -8,6 +8,12 @@ Class {
 	#package : 'FruitTreeProject'
 }
 
+{ #category : 'initialization' }
+AppleTree class >> defaultColor [ 
+    "колір яблук"
+    ^ 'Red'
+]
+
 { #category : 'as yet unclassified' }
 AppleTree class >> species: aString age: aNumber height: h yield: y fruitingAge: f color: c [
    ^ self new
@@ -16,7 +22,7 @@ AppleTree class >> species: aString age: aNumber height: h yield: y fruitingAge:
         height: h;
         yield: y;
         fruitingAge: f;
-        color: c;
+        fruitColor: c;
         yourself.
 
 ]
@@ -31,19 +37,17 @@ AppleTree >> fruitColor: aColor [
     fruitColor := aColor
 ]
 
-{ #category : 'as yet unclassified' }
-AppleTree >> growOneYear [
-    super growOneYear.
-
-    (age even)
-        ifTrue: [ yield := yield + 10 ].
-
+{ #category : 'initialization' }
+AppleTree >> initialize [ 
+    super initialize.
+    fruitColor := self class defaultColor.
 ]
 
-{ #category : 'initialization' }
-AppleTree >> initialize [
-    super initialize.
-    fruitColor := 'Red'. 
+{ #category : 'testing' }
+AppleTree >> isFruiting [ 
+    ^ (age >= fruitingAge)
+        and: [ (age - fruitingAge) even ]
+
 ]
 
 { #category : 'printing' }

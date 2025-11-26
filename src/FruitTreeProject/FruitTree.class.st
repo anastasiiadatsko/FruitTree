@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+FruitTree class >> defaultFruitingAge [ 
+    "вік, з якого дерево починає плодоносити"
+    ^ 3
+]
+
+{ #category : 'as yet unclassified' }
 FruitTree class >> species: aString age: aNumber height: h yield: y fruitingAge: f [
    ^ self new
         species: aString;
@@ -22,6 +28,28 @@ FruitTree class >> species: aString age: aNumber height: h yield: y fruitingAge:
         fruitingAge: f;
         yourself.
 
+]
+
+{ #category : 'arithmetic' }
+FruitTree >> * aNumber [ 
+    ^ self yield * aNumber
+]
+
+{ #category : 'arithmetic' }
+FruitTree >> + anotherTree [ 
+    ^ self yield + anotherTree yield
+]
+
+{ #category : 'arithmetic' }
+FruitTree >> - anotherTree [ 
+    ^ self yield - anotherTree yield
+
+
+]
+
+{ #category : 'arithmetic' }
+FruitTree >> / aNumber [ 
+    ^ self yield / aNumber
 ]
 
 { #category : 'comparing' }
@@ -95,6 +123,11 @@ FruitTree >> growTwoYears [
 
 ]
 
+{ #category : 'comparing' }
+FruitTree >> hash [
+    ^ self class hash bitXor: height hash
+]
+
 { #category : 'accessing' }
 FruitTree >> height [
 
@@ -113,6 +146,7 @@ FruitTree >> initialize [
 	age := 0.
 	height := 0.
 	yield := 0.
+	fruitingAge := 3.
 
 ]
 
@@ -138,7 +172,7 @@ FruitTree >> printOn: aStream [
 ]
 
 { #category : 'accessing' }
-FruitTree >> species1 [
+FruitTree >> species [
 
 	^ species
 ]
@@ -157,9 +191,7 @@ FruitTree >> tallerThan: anotherTree [
 
 { #category : 'as yet unclassified' }
 FruitTree >> yearPassed [
-    age := age + 1.
-    height := height + 1. 
-    yield := self yieldAmount
+    self growOneYear
 ]
 
 { #category : 'accessing' }
